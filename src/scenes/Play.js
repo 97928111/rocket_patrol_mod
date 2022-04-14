@@ -5,6 +5,7 @@ class Play extends Phaser.Scene
         super("playScene");
         this.rocket;
         
+        
     }
 
     preload()
