@@ -41,6 +41,7 @@ class Menu extends Phaser.Scene
 
     update() 
     {
+        
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
         // easy Mode
             game.settings = {
