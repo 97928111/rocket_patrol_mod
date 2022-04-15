@@ -3,7 +3,7 @@ class Play extends Phaser.Scene
     constructor()
     {
         super("playScene");
-        //halloworld2333
+        //hi
     }
 
     preload()
