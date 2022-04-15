@@ -56,6 +56,7 @@ class Play extends Phaser.Scene
         
         //initialize score
         this.p1Score = 0
+        this.hScore = parseInt(localStorage.getItem("score")) || 0;
         // display score
         
         let scoreConfig = {
@@ -71,6 +72,7 @@ class Play extends Phaser.Scene
             fixedWidth:100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
+        this.bestscore = this.add.text(225,54,"Best: " + this.hScore, scoreConfig);
         
        // GAME OVER flag
         this.gameOver = false;
