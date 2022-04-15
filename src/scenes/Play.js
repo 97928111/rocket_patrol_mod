@@ -69,7 +69,7 @@ class Play extends Phaser.Scene
                 top: 5,
                 botton: 5,
             },
-            fixedWidth:100
+            fixedWidth:150
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
         this.bestscore = this.add.text(225,54,"Best: " + this.hScore, scoreConfig);
