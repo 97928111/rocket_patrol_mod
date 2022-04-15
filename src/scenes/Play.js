@@ -11,7 +11,9 @@ class Play extends Phaser.Scene
         // load image
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('specialship', './assets/specialspaceship.png')
         this.load.image('starfield', './assets/starfield.png');
+        
         // lode spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
@@ -46,7 +48,7 @@ class Play extends Phaser.Scene
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0,0);
-        this.specialShip = new Spaceship2(this, game.config.width, borderUISize * 7 + borderPadding * 4, 'spaceship', 0, 50).setOrigin(0,0);
+        this.specialShip = new Spaceship2(this, game.config.width, borderUISize * 8 + borderPadding * 4, 'specialship', 0, 50).setOrigin(0,0);
         // animation config
         this.anims.create({
             key: 'explode',
@@ -54,17 +56,45 @@ class Play extends Phaser.Scene
             frameRate: 30
         })
         
+        //----------------------------------------------------------------------
+        //timer
+        this.gameTime = game.settings.gameTimer;
+        let gameTimeConfig = 
+        {
+            fontFamily: 'Courier',
+            fontSize: '22px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'left',
+            padding: {
+                top: 5,
+                botton: 5,
+            },
+            fixedWidth:150
+        }
+
+        this.timeLeft = this.add.text(410, 54, "Timer: "+ this.formatTime(this.gameTime), gameTimeConfig);
+        //code from https://phaser.discourse.group/t/countdown-timer/2471
+        this.timeEvent = this.time.addEvent({
+            delay: 1000, callback:() => {this.gameTime -= 1000;
+                                         this.timeLeft.text = "Timer: "+ this.formatTime(this.gameTime);},
+            scope: this,
+            loop: true
+        });
+
+        //----------------------------------------------------------------------
+
         //initialize score
         this.p1Score = 0
-        this.hScore = parseInt(localStorage.getItem("score")) || 0;
+        // Save the Highest score
+        this.bScore = parseInt(localStorage.getItem("score")) || 0;
         // display score
-        
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'left',
             padding: {
                 top: 5,
                 botton: 5,
@@ -72,7 +102,7 @@ class Play extends Phaser.Scene
             fixedWidth:150
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
-        this.bestscore = this.add.text(225,54,"Best: " + this.hScore, scoreConfig);
+        this.bestScore = this.add.text(225,54,"Best: " + this.bScore, scoreConfig);
         
        // GAME OVER flag
         this.gameOver = false;
@@ -163,8 +193,25 @@ class Play extends Phaser.Scene
         
         // score add and repaint
         this.p1Score += ship.points;
+        // highest score compare and save
+        if(this.p1Score > this.bScore)
+        {
+            this.bScore = this.p1Score;
+            localStorage.setItem("score", this.bScore);
+            this.bestScore.text = "Best: " + this.bScore;
+        }
         this.scoreLeft.text = this.p1Score;
         this.sound.play('sfx_explosion');
+    }
+
+    //code from https://phaser.discourse.group/t/countdown-timer/2471
+    formatTime(second)
+    {
+        let s = second/1000;
+        let min = Math.floor(s/60);
+        let seconds = s%60;
+        seconds = seconds.toString().padStart(2, "0");
+        return `${min}:${seconds}`;
     }
     
 }
