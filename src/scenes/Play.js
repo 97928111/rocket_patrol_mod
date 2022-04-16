@@ -3,7 +3,7 @@ class Play extends Phaser.Scene
     constructor()
     {
         super("playScene");
-        //hi
+        this.rocket;
     }
 
     preload()
@@ -20,6 +20,8 @@ class Play extends Phaser.Scene
 
     create()
     {
+        //add event for mouse control
+        this.addEvents();
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         //green UI background
@@ -114,6 +116,14 @@ class Play extends Phaser.Scene
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this); 
+    }
+    //Code from https://www.youtube.com/watch?v=9wvlAzKseCo&t=7s
+    // Mouse control rocket after shooting
+    addEvents()
+    {
+        this.input.on( 'pointermove', pointer => {
+            this.p1Rocket.x = pointer.x;
+        });
     }
    
     update()
