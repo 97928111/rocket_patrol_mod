@@ -11,6 +11,8 @@
     ·Create a new spaceship type (w/ new artwork) that's smaller, moves faster, 
     and is worth more points (20) 
     ·Implement mouse control for player movement and mouse click to fire (20)
+
+    Jimmy Lu
 */
 let config =
 {
